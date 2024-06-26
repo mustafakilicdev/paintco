@@ -1,76 +1,57 @@
-import React from 'react';
-import { useForm, ValidationError } from '@formspree/react';
+import React, { useState } from 'react';
 
 function Contact() {
-  const [state, handleSubmit] = useForm(process.env.REACT_APP_FORMSPREE_ID);
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setIsSubmitted(true);
+  };
 
-
-  if (state.succeeded) {
+  if (isSubmitted) {
     return <p className="text-green-600 text-xl font-semibold">Thanks for your message! We'll get back to you soon.</p>;
   }
 
   return (
     <div className="space-y-6">
       <h1 className="text-4xl font-bold text-blue-600">Contact Us</h1>
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <form name="contact" method="POST" data-netlify="true" onSubmit={handleSubmit} className="space-y-4">
+        <input type="hidden" name="form-name" value="contact" />
         <div>
           <label htmlFor="name" className="block mb-1">Name:</label>
           <input
+            type="text"
             id="name"
-            type="text" 
             name="name"
-            className="w-full px-3 py-2 border border-gray-300 rounded-md"
             required
-          />
-          <ValidationError 
-            prefix="Name" 
-            field="name"
-            errors={state.errors}
-            className="text-red-500 text-sm"
+            className="w-full px-3 py-2 border border-gray-300 rounded-md"
           />
         </div>
-
         <div>
-          <label htmlFor="email" className="block mb-1">Email Address:</label>
+          <label htmlFor="email" className="block mb-1">Email:</label>
           <input
+            type="email"
             id="email"
-            type="email" 
             name="email"
-            className="w-full px-3 py-2 border border-gray-300 rounded-md"
             required
-          />
-          <ValidationError 
-            prefix="Email" 
-            field="email"
-            errors={state.errors}
-            className="text-red-500 text-sm"
+            className="w-full px-3 py-2 border border-gray-300 rounded-md"
           />
         </div>
-
         <div>
           <label htmlFor="message" className="block mb-1">Message:</label>
           <textarea
             id="message"
             name="message"
+            required
             className="w-full px-3 py-2 border border-gray-300 rounded-md"
             rows="4"
-            required
-          />
-          <ValidationError 
-            prefix="Message" 
-            field="message"
-            errors={state.errors}
-            className="text-red-500 text-sm"
-          />
+          ></textarea>
         </div>
-
         <button 
           type="submit" 
-          disabled={state.submitting}
-          className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 disabled:opacity-50"
+          className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
         >
-          {state.submitting ? 'Sending...' : 'Send Message'}
+          Send Message
         </button>
       </form>
     </div>
