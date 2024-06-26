@@ -1,25 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import { database } from '../firebase';
-import { ref, onValue } from 'firebase/database';
+import React from 'react';
 
 function Testimonials() {
-  const [testimonials, setTestimonials] = useState([]);
-
-  useEffect(() => {
-    const testimonialsRef = ref(database, 'testimonials');
-    const unsubscribe = onValue(testimonialsRef, (snapshot) => {
-      const data = snapshot.val();
-      if (data) {
-        const testimonialsList = Object.entries(data).map(([key, value]) => ({
-          id: key,
-          ...value
-        }));
-        setTestimonials(testimonialsList);
-      }
-    });
-
-    return () => unsubscribe();
-  }, []);
+  // For now, we'll use static testimonials
+  const testimonials = [
+    { id: 1, author: "John Doe", text: "Great service!" },
+    { id: 2, author: "Jane Smith", text: "Excellent work!" },
+  ];
 
   return (
     <div className="bg-gray-100 p-6 rounded-lg shadow-md">
